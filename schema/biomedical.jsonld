@@ -1,0 +1,46 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "og": "https://opengenome.bio/schema/v1/"
+  },
+  "@id": "urn:opengenome:analysis:53",
+  "@type": "MedicalStudy",
+  "name": "Hantavirus Pulmonary Syndrome - OpenGenome Research #53",
+  "og:analysisId": 53,
+  "og:primarySignal": "Hantavirus Pulmonary Syndrome",
+  "og:confidenceScore": 87,
+  "og:signalStrength": 82,
+  "og:solanaMint": "SolNFTAddress...",
+  "og:platform": "https://opengenome.bio",
+  "dateCreated": "2026-05-13T00:00:00Z",
+  "studySubject": {
+    "@type": "MedicalCondition",
+    "name": "Hantavirus Pulmonary Syndrome"
+  },
+  "og:herbs": [
+    {
+      "@type": "Drug",
+      "name": "Ginger",
+      "alternateName": "Zingiber officinale",
+      "og:pmid": "21945235"
+    },
+    {
+      "@type": "Drug",
+      "name": "Turmeric",
+      "alternateName": "Curcuma longa",
+      "og:pmid": "37105214"
+    }
+  ],
+  "citation": [
+    {
+      "@type": "ScholarlyArticle",
+      "identifier": "PMID:21945235",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21945235/"
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "identifier": "PMID:37105214",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37105214/"
+    }
+  ]
+}
