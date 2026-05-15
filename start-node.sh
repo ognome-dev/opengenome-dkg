@@ -27,5 +27,29 @@ echo "[otnode] running pre-start peer ID sync..."
 node /opt/pre-start.js || echo "[otnode] pre-start.js non-fatal error, continuing"
 echo "[otnode] pre-start done"
 
+# Background: wait for ot-node to generate the key, then print it clearly
+# Repeats every 30s for 20 minutes so it's impossible to miss in Railway logs
+if [ -z "$LIBP2P_PRIVATE_KEY" ]; then
+  (
+    KEY_PATH="/opt/ot-node/data/libp2p/privateKey"
+    for attempt in $(seq 1 40); do
+      sleep 30
+      if [ -f "$KEY_PATH" ]; then
+        KEY=$(cat "$KEY_PATH")
+        echo ""
+        echo "################################################################"
+        echo "## LIBP2P_PRIVATE_KEY — SET THIS IN RAILWAY VARIABLES NOW     ##"
+        echo "################################################################"
+        echo "$KEY"
+        echo "################################################################"
+        echo "## Copy the line above. Railway → Variables → LIBP2P_PRIVATE_KEY"
+        echo "################################################################"
+        echo ""
+        sleep 60
+      fi
+    done
+  ) &
+fi
+
 echo "[otnode] launching ot-node..."
 exec node index.js
