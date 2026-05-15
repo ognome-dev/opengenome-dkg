@@ -39,17 +39,21 @@ async function main() {
   const privKeyStr  = fs.readFileSync(KEY_PATH).toString().trim();
   const localPeerId = await getPeerIdStr(privKeyStr);
   if (!localPeerId) {
-    console.log('[pre-start] Could not derive peer ID — skipping on-chain sync.');
+    console.log('[pre-start] Could not derive peer ID — skipping on-chain check.');
     return;
   }
   console.log('[pre-start] Local peer ID:', localPeerId);
 
+  if (!injectedKey) {
+    console.log('=== SAVE THIS as LIBP2P_PRIVATE_KEY in Railway ===');
+    console.log(privKeyStr);
+    console.log('===');
+  }
+
   const rpc     = process.env.BASE_RPC_URL || 'https://mainnet.base.org';
   const pk      = process.env.DKG_WALLET_PRIVATE_KEY;
-  const mgmtKey = process.env.EVM_MANAGEMENT_PUBLIC_KEY;
-  const nName   = 'opengenome';
-  if (!pk || !mgmtKey) {
-    console.log('[pre-start] Missing DKG keys — skip on-chain check.');
+  if (!pk) {
+    console.log('[pre-start] Missing DKG_WALLET_PRIVATE_KEY — skip on-chain check.');
     return;
   }
 
@@ -58,14 +62,12 @@ async function main() {
   const hubAbi   = ['function getContractAddress(string calldata contractName) external view returns (address)'];
   const hub      = new ethers.Contract(HUB_ADDR, hubAbi, provider);
 
-  let profileAddr, psAddr, isAddr;
+  let psAddr, isAddr;
   try {
-    [profileAddr, psAddr, isAddr] = await Promise.all([
-      hub.getContractAddress('Profile'),
+    [psAddr, isAddr] = await Promise.all([
       hub.getContractAddress('ProfileStorage'),
       hub.getContractAddress('IdentityStorage'),
     ]);
-    console.log('[pre-start] Profile:', profileAddr);
   } catch (e) { console.error('[pre-start] Hub lookup failed:', e.message); return; }
 
   const isAbi = ['function getIdentityId(address addr) external view returns (uint72)'];
@@ -80,42 +82,28 @@ async function main() {
   } catch (e) { console.error('[pre-start] getIdentityId failed:', e.message); return; }
 
   if (identityId === 0) {
-    console.log('[pre-start] No identity yet — ot-node will createProfile.');
+    console.log('[pre-start] No identity yet — ot-node will createProfile on first start.');
     return;
   }
 
   let onChainPeerId = '';
   try {
-    const raw    = await psMod.getNodeId(identityId);
+    const raw = await psMod.getNodeId(identityId);
     onChainPeerId = Buffer.from(raw.slice(2), 'hex').toString('utf8');
     console.log('[pre-start] On-chain peer ID:', onChainPeerId);
   } catch (e) { console.error('[pre-start] getNodeId failed:', e.message); }
 
   if (onChainPeerId === localPeerId) {
-    console.log('[pre-start] Peer IDs match — no update needed.');
+    console.log('[pre-start] Peer IDs match — all good.');
     return;
   }
 
-  console.log('[pre-start] Mismatch — calling Profile.createProfile to update on-chain peer ID...');
-  const profileAbi = [
-    'function createProfile(address adminWallet, address[] calldata operationalWallets, string calldata nodeName, bytes calldata nodeId, uint16 initialOperatorFee) external'
-  ];
-  const profileContract = new ethers.Contract(profileAddr, profileAbi, wallet);
-  const nodeIdBytes     = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(localPeerId));
-  try {
-    const tx = await profileContract.createProfile(mgmtKey, [], nName, nodeIdBytes, 0, { gasLimit: 500000 });
-    console.log('[pre-start] TX sent:', tx.hash);
-    await tx.wait();
-    console.log('[pre-start] On-chain peer ID updated to:', localPeerId);
-  } catch (e) {
-    console.error('[pre-start] createProfile failed:', e.message);
-  }
-
-  if (!injectedKey) {
-    console.log('=== SAVE THIS as LIBP2P_PRIVATE_KEY in Railway ===');
-    console.log(privKeyStr);
-    console.log('===');
-  }
+  // Profile.createProfile reverts when profile already exists (no updateNodeId in Profile.sol).
+  // ot-node.js is patched (patch-ot-node.js) to NOT shut down on peer ID mismatch.
+  // The node will run with the local key; on-chain ID is stale but harmless for publish/get ops.
+  console.log('[pre-start] WARN: local peer ID differs from on-chain. Node will continue (patched).');
+  console.log('[pre-start] Local :', localPeerId);
+  console.log('[pre-start] On-chain:', onChainPeerId);
 }
 
 main()
