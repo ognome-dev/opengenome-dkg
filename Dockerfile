@@ -16,6 +16,8 @@ WORKDIR /opt/ot-node
 RUN git clone --depth=1 --branch v8/develop \
     https://github.com/OriginTrail/ot-node.git . \
     && npm install --omit=dev --ignore-scripts
+COPY patch-ot-node.js /opt/ot-node/patch-ot-node.js
+RUN node /opt/ot-node/patch-ot-node.js
 RUN mkdir -p /opt/ot-node/data /opt/fuseki/databases /var/log/supervisor /var/run/mysqld \
     && chown -R mysql:mysql /var/run/mysqld
 COPY .origintrail_noderc.template /opt/ot-node/.origintrail_noderc.template
