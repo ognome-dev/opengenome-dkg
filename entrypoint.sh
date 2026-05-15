@@ -2,6 +2,25 @@
 set -e
 
 echo "[entrypoint] starting at $(date)"
+
+# Derive management wallet public address from private key if provided
+if [ -n "$MANAGER_DKG_PK" ]; then
+  echo "[entrypoint] deriving management wallet address from MANAGER_DKG_PK..."
+  EVM_MANAGEMENT_PUBLIC_KEY=$(node -e "
+    try {
+      const e = require('/opt/ot-node/node_modules/ethers');
+      const pk = process.env.MANAGER_DKG_PK;
+      const wallet = new e.Wallet(pk);
+      process.stdout.write(wallet.address);
+    } catch(err) {
+      process.stderr.write('Error: ' + err.message + '\n');
+      process.exit(1);
+    }
+  " 2>/dev/null)
+  export EVM_MANAGEMENT_PUBLIC_KEY
+  echo "[entrypoint] management wallet set: $EVM_MANAGEMENT_PUBLIC_KEY"
+fi
+
 echo "[entrypoint] injecting env vars into noderc..."
 envsubst < /opt/ot-node/.origintrail_noderc.template > /opt/ot-node/.origintrail_noderc
 echo "[entrypoint] noderc generated"
