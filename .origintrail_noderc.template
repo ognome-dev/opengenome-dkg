@@ -11,7 +11,7 @@
             "nodeName": "opengenome",
             "hubContractAddress": "0x99Aa571fD5e681c2D27ee08A7b7989DB02541d13",
             "rpcEndpoints": ["${BASE_RPC_URL}"],
-            "evmManagementPublicKey": "${EVM_MANAGEMENT_PUBLIC_KEY}",
+            "evmManagementWalletPublicKey": "${EVM_MANAGEMENT_PUBLIC_KEY}",
             "operationalWallets": [
               {
                 "evmAddress": "${DKG_WALLET_ADDRESS}",
