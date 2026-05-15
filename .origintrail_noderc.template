@@ -2,16 +2,13 @@
   "modules": {
     "blockchain": {
       "implementation": {
-        "hardhat1:31337": {
-          "enabled": false
-        },
-        "hardhat2:31337": {
-          "enabled": false
-        },
+        "hardhat1:31337": { "enabled": false },
+        "hardhat2:31337": { "enabled": false },
         "base:8453": {
           "enabled": true,
           "package": "./blockchain/implementation/base/base-service.js",
           "config": {
+            "nodeName": "opengenome",
             "hubContractAddress": "0x99Aa571fD5e681c2D27ee08A7b7989DB02541d13",
             "rpcEndpoints": ["${BASE_RPC_URL}"],
             "evmManagementPublicKey": "${EVM_MANAGEMENT_PUBLIC_KEY}",
@@ -54,18 +51,9 @@
           "package": "./triple-store/implementation/ot-fuseki/ot-fuseki.js",
           "config": {
             "repositories": {
-              "dkg": {
-                "url": "http://localhost:3030",
-                "name": "dkg"
-              },
-              "publicCurrent": {
-                "url": "http://localhost:3030",
-                "name": "publicCurrent"
-              },
-              "privateCurrent": {
-                "url": "http://localhost:3030",
-                "name": "privateCurrent"
-              }
+              "dkg": { "url": "http://localhost:3030", "name": "dkg" },
+              "publicCurrent": { "url": "http://localhost:3030", "name": "publicCurrent" },
+              "privateCurrent": { "url": "http://localhost:3030", "name": "privateCurrent" }
             }
           }
         },
