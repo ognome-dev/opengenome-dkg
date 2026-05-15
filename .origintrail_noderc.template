@@ -1,0 +1,106 @@
+{
+  "modules": {
+    "blockchain": {
+      "implementation": {
+        "base:8453": {
+          "enabled": true,
+          "package": "./blockchain/implementation/base/base-service.js",
+          "config": {
+            "hubContractAddress": "0x99Aa571fD5e681c2D27ee08A7b7989DB02541d13",
+            "rpcEndpoints": ["${BASE_RPC_URL}"],
+            "evmManagementPublicKey": "${EVM_MANAGEMENT_PUBLIC_KEY}",
+            "operationalWallets": [
+              {
+                "evmAddress": "${DKG_WALLET_ADDRESS}",
+                "privateKey": "${DKG_WALLET_PRIVATE_KEY}"
+              }
+            ],
+            "initialAskAmount": 0.2,
+            "operatorFee": 0
+          }
+        }
+      }
+    },
+    "repository": {
+      "enabled": true,
+      "implementation": {
+        "sequelize-repository": {
+          "enabled": true,
+          "package": "./repository/implementation/sequelize/sequelize-repository.js",
+          "config": {
+            "database": "operationaldb",
+            "user": "otnode",
+            "password": "${MYSQL_PASSWORD}",
+            "port": "3306",
+            "host": "127.0.0.1",
+            "dialect": "mysql",
+            "logging": false,
+            "pool": {
+              "max": 30,
+              "min": 0,
+              "acquire": 60000,
+              "idle": 10000
+            }
+          }
+        }
+      }
+    },
+    "tripleStore": {
+      "enabled": true,
+      "implementation": {
+        "ot-blazegraph": {
+          "enabled": true,
+          "package": "./triple-store/implementation/ot-blazegraph/ot-blazegraph.js",
+          "config": {}
+        },
+        "ot-fuseki": {
+          "enabled": false,
+          "package": "./triple-store/implementation/ot-fuseki/ot-fuseki.js",
+          "config": {}
+        }
+      }
+    },
+    "httpClient": {
+      "enabled": true,
+      "implementation": {
+        "express-http-client": {
+          "enabled": true,
+          "package": "./http-client/implementation/express-http-client.js",
+          "config": {
+            "useSsl": false,
+            "port": 8900,
+            "rateLimiter": {
+              "timeWindowSeconds": 60,
+              "maxRequests": 200
+            }
+          }
+        }
+      }
+    },
+    "network": {
+      "implementation": {
+        "libp2p-service": {
+          "config": {
+            "port": 9100,
+            "bootstrap": []
+          }
+        }
+      }
+    },
+    "telemetry": {
+      "enabled": false
+    }
+  },
+  "auth": {
+    "ipBasedAuthEnabled": false,
+    "tokenBasedAuthEnabled": true,
+    "loggingEnabled": true,
+    "publicOperations": ["publish", "get", "query"],
+    "bothIpAndTokenAuthRequired": false
+  },
+  "appDataPath": "/opt/ot-node/data",
+  "commandExecutorVerboseLoggingEnabled": false,
+  "logging": {
+    "defaultLevel": "info"
+  }
+}
