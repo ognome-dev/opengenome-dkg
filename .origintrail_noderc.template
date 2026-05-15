@@ -94,6 +94,6 @@
     "publicOperations": ["publish", "get", "query"],
     "bothIpAndTokenAuthRequired": false
   },
-  "appDataPath": "/opt/ot-node/data",
+  "appDataPath": "data",
   "logging": { "defaultLevel": "info" }
 }
