@@ -2,15 +2,21 @@
   "modules": {
     "blockchain": {
       "implementation": {
-        "hardhat1:31337": { "enabled": false },
-        "hardhat2:31337": { "enabled": false },
+        "hardhat1:31337": {
+          "enabled": false
+        },
+        "hardhat2:31337": {
+          "enabled": false
+        },
         "base:8453": {
           "enabled": true,
           "package": "./blockchain/implementation/base/base-service.js",
           "config": {
             "nodeName": "opengenome",
             "hubContractAddress": "0x99Aa571fD5e681c2D27ee08A7b7989DB02541d13",
-            "rpcEndpoints": ["${BASE_RPC_URL}"],
+            "rpcEndpoints": [
+              "${BASE_RPC_URL}"
+            ],
             "evmManagementWalletPublicKey": "${EVM_MANAGEMENT_PUBLIC_KEY}",
             "operationalWallets": [
               {
@@ -38,7 +44,12 @@
             "host": "127.0.0.1",
             "dialect": "mysql",
             "logging": false,
-            "pool": { "max": 20, "min": 0, "acquire": 60000, "idle": 10000 }
+            "pool": {
+              "max": 20,
+              "min": 0,
+              "acquire": 60000,
+              "idle": 10000
+            }
           }
         }
       }
@@ -51,9 +62,18 @@
           "package": "./triple-store/implementation/ot-fuseki/ot-fuseki.js",
           "config": {
             "repositories": {
-              "dkg": { "url": "http://localhost:3030", "name": "dkg" },
-              "publicCurrent": { "url": "http://localhost:3030", "name": "publicCurrent" },
-              "privateCurrent": { "url": "http://localhost:3030", "name": "privateCurrent" }
+              "dkg": {
+                "url": "http://localhost:3030",
+                "name": "dkg"
+              },
+              "publicCurrent": {
+                "url": "http://localhost:3030",
+                "name": "publicCurrent"
+              },
+              "privateCurrent": {
+                "url": "http://localhost:3030",
+                "name": "privateCurrent"
+              }
             }
           }
         },
@@ -73,7 +93,10 @@
           "config": {
             "useSsl": false,
             "port": 8900,
-            "rateLimiter": { "timeWindowSeconds": 60, "maxRequests": 200 }
+            "rateLimiter": {
+              "timeWindowSeconds": 60,
+              "maxRequests": 200
+            }
           }
         }
       }
@@ -81,19 +104,30 @@
     "network": {
       "implementation": {
         "libp2p-service": {
-          "config": { "port": 9100, "bootstrap": [] }
+          "config": {
+            "port": 9100,
+            "bootstrap": []
+          }
         }
       }
     },
-    "telemetry": { "enabled": false }
+    "telemetry": {
+      "enabled": false
+    }
   },
   "auth": {
     "ipBasedAuthEnabled": false,
-    "tokenBasedAuthEnabled": true,
+    "tokenBasedAuthEnabled": false,
     "loggingEnabled": true,
-    "publicOperations": ["publish", "get", "query"],
+    "publicOperations": [
+      "publish",
+      "get",
+      "query"
+    ],
     "bothIpAndTokenAuthRequired": false
   },
   "appDataPath": "data",
-  "logging": { "defaultLevel": "info" }
+  "logging": {
+    "defaultLevel": "info"
+  }
 }
