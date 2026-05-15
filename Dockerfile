@@ -20,11 +20,11 @@ RUN mkdir -p /opt/blazegraph \
     && curl -L -o /opt/blazegraph/blazegraph.jar \
     https://github.com/blazegraph/database/releases/download/BLAZEGRAPH_2_1_6_RC/blazegraph.jar
 
-# ot-node
+# ot-node — skip prepare/husky, not needed on server
 WORKDIR /opt/ot-node
 RUN git clone --depth=1 --branch v8/develop \
     https://github.com/OriginTrail/ot-node.git . \
-    && npm install --omit=dev
+    && npm install --omit=dev --ignore-scripts
 
 RUN mkdir -p /opt/ot-node/data /var/log/supervisor /var/run/mysqld \
     && chown -R mysql:mysql /var/run/mysqld
