@@ -14,13 +14,13 @@ mysql -u root -e "CREATE USER IF NOT EXISTS 'otnode'@'localhost' IDENTIFIED BY '
 mysql -u root -e "GRANT ALL PRIVILEGES ON operationaldb.* TO 'otnode'@'localhost'; FLUSH PRIVILEGES;"
 echo "[otnode] DB ready"
 
-echo "[otnode] waiting for Blazegraph on port 9999..."
+echo "[otnode] waiting for Fuseki on port 3030..."
 for i in $(seq 1 40); do
-  if nc -z localhost 9999 2>/dev/null; then
-    echo "[otnode] Blazegraph up at attempt $i"; break
+  if nc -z localhost 3030 2>/dev/null; then
+    echo "[otnode] Fuseki up at attempt $i"; break
   fi
-  echo "[otnode] Blazegraph not ready ($i/40)..."; sleep 3
+  echo "[otnode] Fuseki not ready ($i/40)..."; sleep 3
 done
 
-echo "[otnode] starting ot-node..."
+echo "[otnode] launching ot-node..."
 exec node index.js
