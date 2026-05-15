@@ -9,6 +9,7 @@ for i in $(seq 1 40); do
 done
 
 echo "[otnode] setting up DB..."
+mysql -u root -e "SET GLOBAL log_bin_trust_function_creators = 1;"
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS operationaldb CHARACTER SET utf8mb4;"
 mysql -u root -e "CREATE USER IF NOT EXISTS 'otnode'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON operationaldb.* TO 'otnode'@'localhost'; FLUSH PRIVILEGES;"
