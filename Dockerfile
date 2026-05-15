@@ -22,6 +22,7 @@ COPY .origintrail_noderc.template /opt/ot-node/.origintrail_noderc.template
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY start-node.sh /opt/ot-node/start-node.sh
 COPY entrypoint.sh /entrypoint.sh
+COPY pre-start.js /opt/pre-start.js
 RUN chmod +x /entrypoint.sh /opt/ot-node/start-node.sh
 EXPOSE 8900 9100
 ENTRYPOINT ["/entrypoint.sh"]
