@@ -35,12 +35,7 @@
             "host": "127.0.0.1",
             "dialect": "mysql",
             "logging": false,
-            "pool": {
-              "max": 30,
-              "min": 0,
-              "acquire": 60000,
-              "idle": 10000
-            }
+            "pool": { "max": 20, "min": 0, "acquire": 60000, "idle": 10000 }
           }
         }
       }
@@ -48,14 +43,14 @@
     "tripleStore": {
       "enabled": true,
       "implementation": {
-        "ot-blazegraph": {
+        "ot-fuseki": {
           "enabled": true,
-          "package": "./triple-store/implementation/ot-blazegraph/ot-blazegraph.js",
+          "package": "./triple-store/implementation/ot-fuseki/ot-fuseki.js",
           "config": {}
         },
-        "ot-fuseki": {
+        "ot-blazegraph": {
           "enabled": false,
-          "package": "./triple-store/implementation/ot-fuseki/ot-fuseki.js",
+          "package": "./triple-store/implementation/ot-blazegraph/ot-blazegraph.js",
           "config": {}
         }
       }
@@ -69,10 +64,7 @@
           "config": {
             "useSsl": false,
             "port": 8900,
-            "rateLimiter": {
-              "timeWindowSeconds": 60,
-              "maxRequests": 200
-            }
+            "rateLimiter": { "timeWindowSeconds": 60, "maxRequests": 200 }
           }
         }
       }
@@ -80,16 +72,11 @@
     "network": {
       "implementation": {
         "libp2p-service": {
-          "config": {
-            "port": 9100,
-            "bootstrap": []
-          }
+          "config": { "port": 9100, "bootstrap": [] }
         }
       }
     },
-    "telemetry": {
-      "enabled": false
-    }
+    "telemetry": { "enabled": false }
   },
   "auth": {
     "ipBasedAuthEnabled": false,
@@ -99,8 +86,5 @@
     "bothIpAndTokenAuthRequired": false
   },
   "appDataPath": "/opt/ot-node/data",
-  "commandExecutorVerboseLoggingEnabled": false,
-  "logging": {
-    "defaultLevel": "info"
-  }
+  "logging": { "defaultLevel": "info" }
 }
