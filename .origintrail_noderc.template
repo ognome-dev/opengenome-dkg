@@ -2,6 +2,12 @@
   "modules": {
     "blockchain": {
       "implementation": {
+        "hardhat1:31337": {
+          "enabled": false
+        },
+        "hardhat2:31337": {
+          "enabled": false
+        },
         "base:8453": {
           "enabled": true,
           "package": "./blockchain/implementation/base/base-service.js",
