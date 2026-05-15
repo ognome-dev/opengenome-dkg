@@ -43,15 +43,29 @@
     "tripleStore": {
       "enabled": true,
       "implementation": {
-        "ot-fuseki": {
-          "enabled": true,
-          "package": "./triple-store/implementation/ot-fuseki/ot-fuseki.js",
-          "config": {}
-        },
         "ot-blazegraph": {
-          "enabled": false,
+          "enabled": true,
           "package": "./triple-store/implementation/ot-blazegraph/ot-blazegraph.js",
-          "config": {}
+          "config": {
+            "repositories": {
+              "dkg": {
+                "url": "http://localhost:9999",
+                "name": "dkg"
+              }
+            }
+          }
+        },
+        "ot-fuseki": {
+          "enabled": false,
+          "package": "./triple-store/implementation/ot-fuseki/ot-fuseki.js",
+          "config": {
+            "repositories": {
+              "dkg": {
+                "url": "http://localhost:3030",
+                "name": "dkg"
+              }
+            }
+          }
         }
       }
     },
