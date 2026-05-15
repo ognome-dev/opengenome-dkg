@@ -23,5 +23,9 @@ for i in $(seq 1 40); do
   echo "[otnode] Fuseki not ready ($i/40)..."; sleep 3
 done
 
+echo "[otnode] running pre-start peer ID sync..."
+node /opt/pre-start.js || echo "[otnode] pre-start.js non-fatal error, continuing"
+echo "[otnode] pre-start done"
+
 echo "[otnode] launching ot-node..."
 exec node index.js
