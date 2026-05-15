@@ -51,9 +51,11 @@ async function main() {
   }
 
   const rpc     = process.env.BASE_RPC_URL || 'https://mainnet.base.org';
-  const pk      = process.env.DKG_WALLET_PRIVATE_KEY;
+  // NODE_WALLET_PRIVATE_KEY = new clean wallet for the node identity
+  // Fallback to DKG_WALLET_PRIVATE_KEY for backward compat
+  const pk      = process.env.NODE_WALLET_PRIVATE_KEY || process.env.DKG_WALLET_PRIVATE_KEY;
   if (!pk) {
-    console.log('[pre-start] Missing DKG_WALLET_PRIVATE_KEY — skip on-chain check.');
+    console.log('[pre-start] Missing NODE_WALLET_PRIVATE_KEY — skip on-chain check.');
     return;
   }
 
